@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.animation as animation
 
+# General stuff
+import numpy as np
+
 # Paths to data, baseline and detrended stack
 BASELINE_PATH = "../data/baseline.tiff"
 DETRENDED_PATH = "../data/detrended.tiff"
@@ -28,4 +31,21 @@ def display_animation():
                                     repeat_delay=1000)
     plt.show()
 
+# Display graph showing rate of change over time
+def display_rate_of_change(rolling_window=100):
+    # Calculate delta in the data at every frame
+    changes = []
+    for i in range(len(detrended_data) - 1):
+        changes.append(np.sum(np.absolute(detrended_data[i] - detrended_data[i + 1])))
+    # Normalize
+    changes = changes / np.max(changes)
+    # Apply rolling average
+    rolling = [sum(changes[i:i+rolling_window])/float(rolling_window) for i in range(len(changes)-rolling_window+1)]
+    plt.title('Rate of change, rolling avg (window = ' + str(rolling_window) + ')')
+    plt.ylabel('Change (normalized)')
+    plt.xlabel('Frame')
+    plt.plot(rolling)
+    plt.show()
+
 display_animation()
+display_rate_of_change()
