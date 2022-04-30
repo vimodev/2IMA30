@@ -8,6 +8,7 @@ import matplotlib.animation as animation
 
 # General stuff
 import numpy as np
+import skimage.measure
 
 # Paths to data, baseline and detrended stack
 BASELINE_PATH = "../data/baseline.tiff"
@@ -70,6 +71,29 @@ def display_stats():
     plt.title('Statistics over time')
     plt.show()
 
+# Display an animated progression over time of the data change rate in heatmap
+def display_heatmap_animation(pool_size=4):
+    changes = []
+    # Calculate the pixel value changes and apply a small mean pooling kernel
+    for i in range(len(detrended_data) - 1):
+        change = np.abs(detrended_data[i] - detrended_data[i+1])
+        change_reduced = skimage.measure.block_reduce(change, (pool_size,pool_size), np.mean)
+        changes.append(change_reduced)
+    # Normalize
+    m = np.max(changes)
+    for i in range(len(detrended_data) - 1):
+        changes[i] = changes[i] / m
+    frames = []
+    fig = plt.figure()
+    # Generate frame for every calculated change
+    for i in range(len(detrended_data) - 1):
+        frames.append([plt.imshow(changes[i], cmap='inferno', animated=True)])
+    ani = animation.ArtistAnimation(fig, frames, interval=16, blit=True,
+                                    repeat_delay=1000)
+    plt.title('Heatmap for height change')
+    plt.show()
+
 display_animation()
+# display_heatmap_animation()
 # display_stats()
 # display_rate_of_change()
