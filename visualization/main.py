@@ -47,5 +47,29 @@ def display_rate_of_change(rolling_window=100):
     plt.plot(rolling)
     plt.show()
 
+# Display several statistics over time
+def display_stats():
+    means = []
+    medians = []
+    q1s = []
+    q3s = []
+    # Compute mean, median and 25th and 75th percentile per frame
+    for i in range(len(detrended_data)):
+        dat = detrended_data[i] + baseline_data
+        means.append(np.mean(dat))
+        medians.append(np.median(dat))
+        q1s.append(np.percentile(dat, 25))
+        q3s.append(np.percentile(dat, 75))
+    plt.plot(means, label="mean")
+    plt.plot(medians, label="median")
+    plt.plot(q1s, label="25th percentile")
+    plt.plot(q3s, label="75th percentile")
+    plt.legend()
+    plt.xlabel("Frame")
+    plt.ylabel("Height")
+    plt.title('Statistics over time')
+    plt.show()
+
 display_animation()
-display_rate_of_change()
+# display_stats()
+# display_rate_of_change()
