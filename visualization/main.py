@@ -17,13 +17,14 @@ print("Baseline shape: " + str(baseline_data.shape))
 detrended_data = tifffile.imread(DETRENDED_PATH)
 print("Detrended shape: " + str(detrended_data.shape))
 
+# Display an animated progression over time of the data
 def display_animation():
-    frames = [] # for storing the generated images
+    frames = []
     fig = plt.figure()
+    # Generate frame for every page in the detrended_data stack
     for i in range(len(detrended_data)):
         frames.append([plt.imshow(detrended_data[i] + baseline_data, cmap='RdYlBu_r', animated=True)])
-
-    ani = animation.ArtistAnimation(fig, frames, interval=50, blit=True,
+    ani = animation.ArtistAnimation(fig, frames, interval=16, blit=True,
                                     repeat_delay=1000)
     plt.show()
 
