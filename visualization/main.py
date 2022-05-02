@@ -3,12 +3,14 @@ import tifffile
 
 # Visualization stuff
 import matplotlib.pyplot as plt
+import matplotlib
 import matplotlib.cm as cm
 import matplotlib.animation as animation
 
 # General stuff
 import numpy as np
 import skimage.measure
+matplotlib.use("TkAgg")
 
 # Paths to data, baseline and detrended stack
 BASELINE_PATH = "../data/baseline.tiff"
