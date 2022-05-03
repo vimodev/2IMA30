@@ -24,14 +24,16 @@ detrended_data = tifffile.imread(DETRENDED_PATH)
 print("Detrended shape: " + str(detrended_data.shape))
 
 # Display an animated progression over time of the data
-def display_animation():
+def display_animation(export=False):
     frames = []
-    fig = plt.figure()
+    fig = plt.figure(figsize=(16, 9))
     # Generate frame for every page in the detrended_data stack
     for i in range(len(detrended_data)):
         frames.append([plt.imshow(detrended_data[i] + baseline_data, cmap='RdYlBu_r', animated=True)])
     ani = animation.ArtistAnimation(fig, frames, interval=16, blit=True,
                                     repeat_delay=1000)
+    if export:
+        ani.save("animation.mp4", dpi=120, fps=30)
     plt.show()
 
 # Display graph showing rate of change over time
@@ -74,7 +76,7 @@ def display_stats():
     plt.show()
 
 # Display an animated progression over time of the data change rate in heatmap
-def display_heatmap_animation(pool_size=4):
+def display_heatmap_animation(pool_size=4, export=False):
     changes = []
     # Calculate the pixel value changes and apply a small mean pooling kernel
     for i in range(len(detrended_data) - 1):
@@ -86,12 +88,14 @@ def display_heatmap_animation(pool_size=4):
     for i in range(len(detrended_data) - 1):
         changes[i] = changes[i] / m
     frames = []
-    fig = plt.figure()
+    fig = plt.figure(figsize=(16, 9))
     # Generate frame for every calculated change
     for i in range(len(detrended_data) - 1):
         frames.append([plt.imshow(changes[i], cmap='inferno', animated=True)])
     ani = animation.ArtistAnimation(fig, frames, interval=16, blit=True,
                                     repeat_delay=1000)
+    if export:
+        ani.save("heatmap.mp4", dpi=120, fps=30)
     plt.title('Heatmap for height change')
     plt.show()
 
