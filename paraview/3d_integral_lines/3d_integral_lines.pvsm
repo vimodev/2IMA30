@@ -2,10 +2,11 @@
   <ServerManagerState version="5.10.1">
     <Proxy group="animation" type="AnimationScene" id="263" servers="16">
       <Property name="AnimationTime" id="263.AnimationTime" number_of_elements="1">
-        <Element index="0" value="604"/>
+        <Element index="0" value="661"/>
       </Property>
-      <Property name="Cues" id="263.Cues" number_of_elements="1">
+      <Property name="Cues" id="263.Cues" number_of_elements="2">
         <Proxy value="265"/>
+        <Proxy value="212092"/>
         <Domain name="groups" id="263.Cues.groups"/>
       </Property>
       <Property name="Duration" id="263.Duration" number_of_elements="1">
@@ -62,6 +63,221 @@
       <Property name="ViewModules" id="263.ViewModules" number_of_elements="1">
         <Proxy value="6496"/>
         <Domain name="groups" id="263.ViewModules.groups"/>
+      </Property>
+    </Proxy>
+    <Proxy group="animation" type="CameraAnimationCue" id="212092" servers="16">
+      <Property name="AnimatedElement" id="212092.AnimatedElement" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="AnimatedProxy" id="212092.AnimatedProxy" number_of_elements="1">
+        <Proxy value="6496"/>
+      </Property>
+      <Property name="DataSource" id="212092.DataSource"/>
+      <Property name="Enabled" id="212092.Enabled" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="212092.Enabled.bool"/>
+      </Property>
+      <Property name="EndTime" id="212092.EndTime" number_of_elements="1">
+        <Element index="0" value="1"/>
+      </Property>
+      <Property name="Interpolation" id="212092.Interpolation" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="enum" id="212092.Interpolation.enum">
+          <Entry value="0" text="Linear"/>
+          <Entry value="1" text="Spline"/>
+        </Domain>
+      </Property>
+      <Property name="KeyFrames" id="212092.KeyFrames" number_of_elements="2">
+        <Proxy value="212093"/>
+        <Proxy value="212094"/>
+        <Domain name="groups" id="212092.KeyFrames.groups"/>
+      </Property>
+      <Property name="LastAddedKeyFrameIndex" id="212092.LastAddedKeyFrameIndex"/>
+      <Property name="Mode" id="212092.Mode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="212092.Mode.enum">
+          <Entry value="0" text="Interpolate Camera"/>
+          <Entry value="1" text="Path-based"/>
+          <Entry value="2" text="Follow-data"/>
+        </Domain>
+      </Property>
+      <Property name="StartTime" id="212092.StartTime" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="TimeMode" id="212092.TimeMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="212092.TimeMode.enum">
+          <Entry value="0" text="Normalized"/>
+          <Entry value="1" text="Relative"/>
+        </Domain>
+      </Property>
+    </Proxy>
+    <Proxy group="animation_keyframes" type="CameraKeyFrame" id="212093" servers="16">
+      <Property name="ClosedFocalPath" id="212093.ClosedFocalPath" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="212093.ClosedFocalPath.bool"/>
+      </Property>
+      <Property name="ClosedPositionPath" id="212093.ClosedPositionPath" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="212093.ClosedPositionPath.bool"/>
+      </Property>
+      <Property name="FocalPathPoints" id="212093.FocalPathPoints" number_of_elements="3">
+        <Element index="0" value="799.5"/>
+        <Element index="1" value="79.5000003054738"/>
+        <Element index="2" value="41.953603744506836"/>
+      </Property>
+      <Property name="FocalPoint" id="212093.FocalPoint" number_of_elements="3">
+        <Element index="0" value="98.4282"/>
+        <Element index="1" value="84.4597"/>
+        <Element index="2" value="17.6369"/>
+      </Property>
+      <Property name="FocalPointMode" id="212093.FocalPointMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="212093.FocalPointMode.enum">
+          <Entry value="0" text="Path"/>
+          <Entry value="1" text="FixedDirection"/>
+          <Entry value="2" text="LookAhead"/>
+          <Entry value="3" text="Orthogonal"/>
+        </Domain>
+      </Property>
+      <Property name="KeyTime" id="212093.KeyTime" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="212093.KeyTime.range"/>
+      </Property>
+      <Property name="KeyValues" id="212093.KeyValues" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="ParallelScale" id="212093.ParallelScale" number_of_elements="1">
+        <Element index="0" value="804.623"/>
+      </Property>
+      <Property name="Position" id="212093.Position" number_of_elements="3">
+        <Element index="0" value="86.0502"/>
+        <Element index="1" value="-257.761"/>
+        <Element index="2" value="369.828"/>
+      </Property>
+      <Property name="PositionMode" id="212093.PositionMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="212093.PositionMode.enum">
+          <Entry value="0" text="Path"/>
+          <Entry value="1" text="FixedDirection"/>
+          <Entry value="2" text="LookAhead"/>
+          <Entry value="3" text="Orthogonal"/>
+        </Domain>
+      </Property>
+      <Property name="PositionPathPoints" id="212093.PositionPathPoints" number_of_elements="30">
+        <Element index="0" value="799.5"/>
+        <Element index="1" value="-2706.9306945705025"/>
+        <Element index="2" value="2910.020120607912"/>
+        <Element index="3" value="3149.894774371717"/>
+        <Element index="4" value="-2169.495533735289"/>
+        <Element index="5" value="2367.3922838586104"/>
+        <Element index="6" value="4602.518631913577"/>
+        <Element index="7" value="-773.0205194432257"/>
+        <Element index="8" value="936.5259100594162"/>
+        <Element index="9" value="4602.518631913577"/>
+        <Element index="10" value="949.0883572861144"/>
+        <Element index="11" value="-836.0366793576908"/>
+        <Element index="12" value="3149.8947743717163"/>
+        <Element index="13" value="2339.044037870026"/>
+        <Element index="14" value="-2273.2368224219003"/>
+        <Element index="15" value="799.5000000000006"/>
+        <Element index="16" value="2865.930695181448"/>
+        <Element index="17" value="-2826.1129131188964"/>
+        <Element index="18" value="-1550.8947743717144"/>
+        <Element index="19" value="2328.495534346235"/>
+        <Element index="20" value="-2283.485076369596"/>
+        <Element index="21" value="-3003.518631913574"/>
+        <Element index="22" value="932.0205200541734"/>
+        <Element index="23" value="-852.618702570403"/>
+        <Element index="24" value="-3003.5186319135746"/>
+        <Element index="25" value="-790.0883566751651"/>
+        <Element index="26" value="919.9438868467024"/>
+        <Element index="27" value="-1550.8947743717158"/>
+        <Element index="28" value="-2180.044037259076"/>
+        <Element index="29" value="2357.144029910911"/>
+      </Property>
+      <Property name="ViewAngle" id="212093.ViewAngle" number_of_elements="1">
+        <Element index="0" value="30"/>
+      </Property>
+      <Property name="ViewUp" id="212093.ViewUp" number_of_elements="3">
+        <Element index="0" value="-0.00312862"/>
+        <Element index="1" value="0.717237"/>
+        <Element index="2" value="0.696822"/>
+      </Property>
+    </Proxy>
+    <Proxy group="animation_keyframes" type="CameraKeyFrame" id="212094" servers="16">
+      <Property name="ClosedFocalPath" id="212094.ClosedFocalPath" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="212094.ClosedFocalPath.bool"/>
+      </Property>
+      <Property name="ClosedPositionPath" id="212094.ClosedPositionPath" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="212094.ClosedPositionPath.bool"/>
+      </Property>
+      <Property name="FocalPathPoints" id="212094.FocalPathPoints" number_of_elements="6">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+        <Element index="3" value="1"/>
+        <Element index="4" value="0"/>
+        <Element index="5" value="0"/>
+      </Property>
+      <Property name="FocalPoint" id="212094.FocalPoint" number_of_elements="3">
+        <Element index="0" value="1455.01"/>
+        <Element index="1" value="60.2121"/>
+        <Element index="2" value="41.7538"/>
+      </Property>
+      <Property name="FocalPointMode" id="212094.FocalPointMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="212094.FocalPointMode.enum">
+          <Entry value="0" text="Path"/>
+          <Entry value="1" text="FixedDirection"/>
+          <Entry value="2" text="LookAhead"/>
+          <Entry value="3" text="Orthogonal"/>
+        </Domain>
+      </Property>
+      <Property name="KeyTime" id="212094.KeyTime" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="212094.KeyTime.range"/>
+      </Property>
+      <Property name="KeyValues" id="212094.KeyValues" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="ParallelScale" id="212094.ParallelScale" number_of_elements="1">
+        <Element index="0" value="804.623"/>
+      </Property>
+      <Property name="Position" id="212094.Position" number_of_elements="3">
+        <Element index="0" value="1442.63"/>
+        <Element index="1" value="-282.009"/>
+        <Element index="2" value="393.945"/>
+      </Property>
+      <Property name="PositionMode" id="212094.PositionMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="212094.PositionMode.enum">
+          <Entry value="0" text="Path"/>
+          <Entry value="1" text="FixedDirection"/>
+          <Entry value="2" text="LookAhead"/>
+          <Entry value="3" text="Orthogonal"/>
+        </Domain>
+      </Property>
+      <Property name="PositionPathPoints" id="212094.PositionPathPoints" number_of_elements="9">
+        <Element index="0" value="5"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+        <Element index="3" value="5"/>
+        <Element index="4" value="5"/>
+        <Element index="5" value="0"/>
+        <Element index="6" value="5"/>
+        <Element index="7" value="0"/>
+        <Element index="8" value="0"/>
+      </Property>
+      <Property name="ViewAngle" id="212094.ViewAngle" number_of_elements="1">
+        <Element index="0" value="30"/>
+      </Property>
+      <Property name="ViewUp" id="212094.ViewUp" number_of_elements="3">
+        <Element index="0" value="-0.00312862"/>
+        <Element index="1" value="0.717237"/>
+        <Element index="2" value="0.696822"/>
       </Property>
     </Proxy>
     <Proxy group="animation" type="TimeAnimationCue" id="265" servers="16">
@@ -33587,10 +33803,10 @@
         <Element index="0" value="%-#6.1e"/>
       </Property>
       <Property name="DataRangeMax" id="211093.DataRangeMax" number_of_elements="1">
-        <Element index="0" value="NaN"/>
+        <Element index="0" value="1"/>
       </Property>
       <Property name="DataRangeMin" id="211093.DataRangeMin" number_of_elements="1">
-        <Element index="0" value="NaN"/>
+        <Element index="0" value="0"/>
       </Property>
       <Property name="DrawAnnotations" id="211093.DrawAnnotations" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -35890,7 +36106,7 @@
     <Proxy group="misc" type="TimeKeeper" id="256" servers="16">
       <Property name="SuppressedTimeSources" id="256.SuppressedTimeSources"/>
       <Property name="Time" id="256.Time" number_of_elements="1">
-        <Element index="0" value="604"/>
+        <Element index="0" value="661"/>
         <Domain name="range" id="256.Time.range"/>
       </Property>
       <Property name="TimeLabel" id="256.TimeLabel" number_of_elements="1">
@@ -37257,7 +37473,7 @@
         <Element index="1" value="872"/>
       </Property>
       <Property name="ViewTime" id="6496.ViewTime" number_of_elements="1">
-        <Element index="0" value="604"/>
+        <Element index="0" value="661"/>
         <Domain name="range" id="6496.ViewTime.range"/>
       </Property>
       <Property name="VolumeAnisotropy" id="6496.VolumeAnisotropy" number_of_elements="1">
@@ -37280,30 +37496,30 @@
         <Element index="0" value="0"/>
       </Property>
       <Property name="CameraFocalPoint" id="6496.CameraFocalPoint" number_of_elements="3">
-        <Element index="0" value="799.5000238418579"/>
-        <Element index="1" value="79.50000095367432"/>
-        <Element index="2" value="37.454973220825195"/>
+        <Element index="0" value="1455.01"/>
+        <Element index="1" value="60.21210000000001"/>
+        <Element index="2" value="41.7538"/>
       </Property>
       <Property name="CameraFocalPointInfo" id="6496.CameraFocalPointInfo" number_of_elements="3">
-        <Element index="0" value="799.5000238418579"/>
-        <Element index="1" value="79.50000095367432"/>
-        <Element index="2" value="37.454973220825195"/>
+        <Element index="0" value="1455.01"/>
+        <Element index="1" value="60.21210000000001"/>
+        <Element index="2" value="41.7538"/>
       </Property>
       <Property name="CameraParallelScale" id="6496.CameraParallelScale" number_of_elements="1">
-        <Element index="0" value="804.6230219974466"/>
+        <Element index="0" value="804.623"/>
       </Property>
       <Property name="CameraParallelScaleInfo" id="6496.CameraParallelScaleInfo" number_of_elements="1">
-        <Element index="0" value="804.6230219974466"/>
+        <Element index="0" value="804.623"/>
       </Property>
       <Property name="CameraPosition" id="6496.CameraPosition" number_of_elements="3">
-        <Element index="0" value="795.0079621120175"/>
-        <Element index="1" value="-135.48319826907692"/>
-        <Element index="2" value="268.4990437729938"/>
+        <Element index="0" value="1450.236974076862"/>
+        <Element index="1" value="-71.7289486061925"/>
+        <Element index="2" value="177.53875375613381"/>
       </Property>
       <Property name="CameraPositionInfo" id="6496.CameraPositionInfo" number_of_elements="3">
-        <Element index="0" value="795.0079621120175"/>
-        <Element index="1" value="-135.48319826907692"/>
-        <Element index="2" value="268.4990437729938"/>
+        <Element index="0" value="1450.236974076862"/>
+        <Element index="1" value="-71.7289486061925"/>
+        <Element index="2" value="177.53875375613381"/>
       </Property>
       <Property name="CameraViewAngle" id="6496.CameraViewAngle" number_of_elements="1">
         <Element index="0" value="30"/>
@@ -37312,14 +37528,14 @@
         <Element index="0" value="30"/>
       </Property>
       <Property name="CameraViewUp" id="6496.CameraViewUp" number_of_elements="3">
-        <Element index="0" value="-0.0019928023146736926"/>
-        <Element index="1" value="0.7321121868031382"/>
-        <Element index="2" value="0.6811811614198251"/>
+        <Element index="0" value="-0.0031286206224139424"/>
+        <Element index="1" value="0.7172371426885684"/>
+        <Element index="2" value="0.6968221386271674"/>
       </Property>
       <Property name="CameraViewUpInfo" id="6496.CameraViewUpInfo" number_of_elements="3">
-        <Element index="0" value="-0.0019928023146736926"/>
-        <Element index="1" value="0.7321121868031382"/>
-        <Element index="2" value="0.6811811614198251"/>
+        <Element index="0" value="-0.0031286206224139424"/>
+        <Element index="1" value="0.7172371426885684"/>
+        <Element index="2" value="0.6968221386271674"/>
       </Property>
       <Property name="EyeAngle" id="6496.EyeAngle" number_of_elements="1">
         <Element index="0" value="2"/>
@@ -37328,6 +37544,9 @@
     </Proxy>
     <ProxyCollection name="animation">
       <Item id="263" name="AnimationScene1"/>
+      <Item id="212092" name="CameraAnimationCue1"/>
+      <Item id="212093" name="KeyFrame212093"/>
+      <Item id="212094" name="KeyFrame212094"/>
       <Item id="265" name="TimeAnimationCue1"/>
     </ProxyCollection>
     <ProxyCollection name="layouts">
