@@ -14,13 +14,18 @@ matplotlib.use("TkAgg")
 
 # Paths to data, baseline and detrended stack
 BASELINE_PATH = "../data/baseline.tiff"
-DETRENDED_PATH = "../data/detrended.tiff"
+DETRENDED_PATH = "../data/detrended/detrended_xxxx.tif"
 
 # Load baseline data
 baseline_data = tifffile.imread(BASELINE_PATH)
 print("Baseline shape: " + str(baseline_data.shape))
 # Load detrended data stack
-detrended_data = tifffile.imread(DETRENDED_PATH)
+detrended_data = []
+for i in range(1,663):
+    detrended_data.append(tifffile.imread(DETRENDED_PATH.replace("xxxx", str(i).zfill(4))))
+
+detrended_data = np.array(detrended_data)
+# detrended_data = tifffile.imread(DETRENDED_PATH)
 print("Detrended shape: " + str(detrended_data.shape))
 
 # Display an animated progression over time of the data
@@ -99,7 +104,7 @@ def display_heatmap_animation(pool_size=4, export=False):
     plt.title('Heatmap for height change')
     plt.show()
 
-display_animation()
+# display_animation()
 # display_heatmap_animation()
-# display_stats()
-# display_rate_of_change()
+display_stats()
+display_rate_of_change()
