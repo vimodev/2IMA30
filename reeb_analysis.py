@@ -1,3 +1,4 @@
+from math import sqrt
 from os import listdir
 from os.path import isfile, join
 import matplotlib.pyplot as plt
@@ -52,13 +53,22 @@ for reeb_graph in timesteps:
 
 print("Data preparation done!")
 
-def plot_timestep(timestep):
+def distance(n1, n2):
+    return sqrt((n1[0] - n2[0])**2 + (n1[1] - n2[1])**2)
+
+def plot_timestep(timestep, threshold=0):
     reeb_graph = timesteps[timestep]
     nodes = reeb_graph['nodes']
     edges = reeb_graph['edges']
     types = reeb_graph['types']
     lines = []
+    filtered = []
     for edge in edges:
+        if threshold > 0 and ((types[edge[0]] == 0 and types[edge[1]] == 3) or (types[edge[0]] == 3 and types[edge[1]] == 0)):
+            if distance(nodes[edge[0]], nodes[edge[1]]) < threshold: 
+                filtered.append(edge[0])
+                filtered.append(edge[1])
+                continue
         lines.append([nodes[edge[0]], nodes[edge[1]]])
     lc = mc.LineCollection(lines, linewidths=1, color='black')
     fig, ax = plt.subplots()
@@ -70,11 +80,14 @@ def plot_timestep(timestep):
     ax.spines['right'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
-    x = [node[0] for node in nodes]
-    y = [node[1] for node in nodes]
+    x = [nodes[i][0] for i in range(len(nodes)) if i not in filtered]
+    y = [nodes[i][1] for i in range(len(nodes)) if i not in filtered]
     colors = ['blue', 'green', 'yellow', 'red', 'gray']
-    ax.scatter(x, y, s=2.5, c=[colors[ntype] for ntype in types])
+    c = [colors[types[i]] for i in range(len(types)) if i not in filtered]
+    ax.scatter(x, y, s=2.5, c=c)
     plt.show()
 
+
+
 # print(timesteps[660]['types'])
-plot_timestep(660)
+plot_timestep(660, threshold=40)
