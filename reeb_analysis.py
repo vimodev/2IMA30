@@ -8,6 +8,7 @@ import numpy as np
 from joblib import Parallel, delayed
 import networkx as nx
 
+
 # Fetch all the files
 from matplotlib.gridspec import GridSpec
 
@@ -165,20 +166,41 @@ def analyze(timestep, threshold=0):
 
 
 def count_critical():
-    plot_timestep(300, threshold=40)
-    plot_timestep(550, threshold=40)
-    # print(len(timesteps));
     data = []
     for i in range(len(timesteps)):
-        data.append(analyze(i, 0))
+        counts = analyze(i, 0)
+        counts.append(sum(counts))  # sum all counts
+        data.append(counts)
     a = np.array(data)
-    # print(a)
-    plt.plot(a[:, 0], c='blue')
-    plt.plot(a[:, 1], c='green')
-    plt.plot(a[:, 2], c='yellow')
-    plt.plot(a[:, 3], c='red')
+    plt.plot(a[:, 0], c='blue', label="minima")
+    plt.plot(a[:, 1], c='y', label="split")
+    plt.plot(a[:, 2], c='g', label="merge")
+    plt.plot(a[:, 3], c='red', label="maxima")
+    plt.plot(a[:, 4], c='black', label="total")
     plt.xlabel("Frame")
-    plt.ylabel("#Critical Points")
+    plt.ylabel("Number of Critical Points")
+    plt.title("Number of critical points over time")
+    plt.legend()
+    plt.show()
+
+
+def plot_nr_edges(thresholds : list[int]):
+    for threshold in thresholds:
+        nr_edges = []
+        for timestep in timesteps:
+            edges = timestep['edges']
+            nodes = timestep['nodes']
+            edge_count = 0
+            for edge in edges:
+                if distance(nodes[edge[0]], nodes[edge[1]]) >= threshold:
+                    edge_count += 1
+            nr_edges.append(edge_count)
+
+        plt.plot(nr_edges, label=f"Number of edges with length at least {threshold}")
+    plt.legend()
+    plt.xlabel("Frame")
+    plt.ylabel("Number of edges")
+    plt.title(f"Number of edges of set threshold over time")
     plt.show()
 
 def show_reebgraph_steps():
@@ -200,3 +222,58 @@ def show_reebgraph_steps():
         ax.add_collection(lc)
 
     plt.show()
+
+def plot_edge_lengths(threshold=0):
+    means = []
+    medians = []
+    q1s = []
+    q3s = []
+    # Compute mean, median and 25th and 75th percentile per frame
+    for timestep in timesteps:
+        edges = timestep['edges']
+        nodes = timestep['nodes']
+        lengths = []
+        for edge in edges:
+            n1 = nodes[edge[0]]
+            n2 = nodes[edge[1]]
+            if distance(n1, n2) >= threshold:
+                lengths.append(distance(n1, n2))
+
+        means.append(np.mean(lengths))
+        medians.append(np.median(lengths))
+        q1s.append(np.percentile(lengths, 25))
+        q3s.append(np.percentile(lengths, 75))
+
+    plt.plot(means, label="mean", c="red")
+    #plt.plot(medians, label="median")
+    plt.plot(q1s, label="25th percentile", c="lightcoral")
+    plt.plot(q3s, label="75th percentile", c="darkred")
+    plt.legend()
+    plt.xlabel("Frame")
+    plt.ylabel("Edge length")
+    if threshold == 0:
+        plt.title('Edge length statistics over time')
+    else:
+        plt.title(f'Edge length statistics with threshold {threshold} over time')
+    plt.show()
+
+def plot_total_edges_nodes():
+    nodes = []
+    edges = []
+    for timestep in timesteps:
+        nodes.append(len(timestep['nodes']))
+        edges.append(len(timestep['edges']))
+    plt.plot(nodes, label="Number of nodes")
+    plt.plot(edges, label="Number of edges")
+    plt.title(f'Total number of nodes and edges over time')
+    plt.legend()
+    plt.xlabel("Frame")
+    plt.show()
+
+#plot_timestep(250)
+plot_total_edges_nodes()
+plot_edge_lengths()
+#plot_edge_lengths(5)
+plot_nr_edges([0, 5, 10, 15])
+count_critical()
+show_reebgraph_steps()
