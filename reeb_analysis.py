@@ -93,16 +93,22 @@ def count_parallel_channels():
     plt.colorbar()
     plt.show()
 
-def count_components():
-    num_components = []
+def calculate_betti():
+    b0 = []
+    b1 = []
     for reeb in timesteps:
         G = nx.Graph()
         G.add_nodes_from(range(len(reeb['nodes'])))
         G.add_edges_from(reeb['edges'])
-        num_components.append(len(list(nx.connected_components(G))))
-    plt.plot(num_components)
+        b0.append(len(list(nx.connected_components(G))))
+        b1.append(len(list(nx.cycle_basis(G))))
+    plt.plot(b0)
     plt.xlabel('Timestep')
-    plt.ylabel('#Connected components')
+    plt.ylabel('0th Betti number')
+    plt.show()
+    plt.plot(b1)
+    plt.xlabel('Timestep')
+    plt.ylabel('1st Betti number')
     plt.show()
 
 def distance(n1, n2):
@@ -270,10 +276,45 @@ def plot_total_edges_nodes():
     plt.xlabel("Frame")
     plt.show()
 
+# all nodes with x-coord less that source_threshold are connected to a source, vice versa for sink
+# gap threshold connects maxima with minima if their distance is less than gap_threshold
+def compute_max_flow(source_threshold, sink_threshold, gap_threshold=0):
+    flows = []
+    for reeb in timesteps:
+        G = nx.Graph()
+        G.add_nodes_from(range(len(reeb['nodes'])))
+        G.add_edges_from(reeb['edges'])
+        # Connect gaps
+        if gap_threshold > 0:
+            for n1 in range(len(reeb['nodes'])):
+                if reeb['types'][n1] != 3: continue
+                for n2 in range(len(reeb['nodes'])):
+                    if reeb['types'][n2] != 1: continue
+                    if n1 == n2: continue
+                    if reeb['nodes'][n1][0] > reeb['nodes'][n2][0]: continue
+                    if distance(reeb['nodes'][n1], reeb['nodes'][n2]) <= gap_threshold:
+                        if not (G.has_edge(n1, n2) or G.has_edge(n2, n1)):
+                            G.add_edge(n1, n2)
+        # Add & connect source s and sink t
+        G.add_node('s')
+        G.add_node('t')
+        for n in range(len(reeb['nodes'])):
+            node = reeb['nodes'][n]
+            if (node[0] <= source_threshold): G.add_edge('s', n)
+            if (node[0] >= sink_threshold): G.add_edge(n, 't')
+        nx.set_edge_attributes(G, 1, 'capacity')
+        flows.append(nx.maximum_flow_value(G, 's', 't'))
+    plt.plot(flows)
+    plt.xlabel('Timestep')
+    plt.ylabel('Maximum flow value')
+    plt.show()
+
 #plot_timestep(250)
-plot_total_edges_nodes()
-plot_edge_lengths()
+# plot_total_edges_nodes()
+# plot_edge_lengths()
 #plot_edge_lengths(5)
-plot_nr_edges([0, 5, 10, 15])
-count_critical()
-show_reebgraph_steps()
+# plot_nr_edges([0, 5, 10, 15])
+# count_critical()
+# show_reebgraph_steps()
+# calculate_betti()
+compute_max_flow(400, 1200, gap_threshold=100)
