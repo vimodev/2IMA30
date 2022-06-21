@@ -3,6 +3,7 @@ from os import listdir
 from os.path import isfile, join
 import matplotlib.pyplot as plt
 import matplotlib.collections as mc
+from matplotlib.colors import LogNorm
 import numpy as np
 from joblib import Parallel, delayed
 import networkx as nx
@@ -68,6 +69,22 @@ for type in types:
             step['types'] = type['types']
             break
 print("Data preparation done!")
+
+def count_parallel_channels():
+    count = [[] for t in range(len(timesteps))]
+    for t in range(len(timesteps)):
+        reeb = timesteps[t]
+        ranges = list(map(lambda e: (reeb['nodes'][e[0]][0], reeb['nodes'][e[1]][0]), reeb['edges']))
+        for r in ranges:
+            if r[0] > r[1]: r = reversed(r)
+        count[t] = [0 for x in range(1600)]
+        for r in ranges:
+            for x in range(int(r[0]), int(r[1])): count[t][x] += 1
+    plt.imshow(count, origin='lower')
+    plt.xlabel('Distance from river origin')
+    plt.ylabel('Timestep')
+    plt.colorbar()
+    plt.show()
 
 def count_components():
     num_components = []
@@ -156,4 +173,4 @@ def count_critical():
     plt.ylabel("#Critical Points")
     plt.show()
 
-count_components()
+count_parallel_channels()
