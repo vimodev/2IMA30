@@ -9,6 +9,8 @@ from joblib import Parallel, delayed
 import networkx as nx
 
 # Fetch all the files
+from matplotlib.gridspec import GridSpec
+
 print("Enumerating files...")
 OBJ_PATH = 'reeb_exports'
 files = sorted([join(OBJ_PATH, f) for f in listdir(OBJ_PATH) if isfile(join(OBJ_PATH, f))])
@@ -34,6 +36,8 @@ for file in files:
 # Compute the critical points and types
 print("Computing critical types...")
 critical_types = ['minimum', 'split', 'merge', 'maximum', 'none']
+
+
 def compute_critical(reeb_graph):
     nodes = reeb_graph['nodes']
     edges = reeb_graph['edges']
@@ -59,8 +63,10 @@ def compute_critical(reeb_graph):
         # Check merge node
         elif len(list(filter(lambda n: nodes[n][0] < node[0], adjacent_nodes))) > 1:
             types[id] = 2
-        elif len(list(filter(lambda n: nodes[n][0] < node[0], adjacent_nodes))) > 1: types[id] = 2
+        elif len(list(filter(lambda n: nodes[n][0] < node[0], adjacent_nodes))) > 1:
+            types[id] = 2
     return {'name': reeb_graph['file'], 'types': types}
+
 
 types = Parallel(n_jobs=8)(delayed(compute_critical)(reeb) for reeb in timesteps)
 for type in types:
@@ -132,8 +138,8 @@ def plot_timestep(timestep, threshold=0):
     colors = ['blue', 'green', 'yellow', 'red', 'gray']
     c = [colors[types[i]] for i in range(len(types)) if i not in filtered]
     ax.scatter(x, y, s=2.5, c=c)
-    plt.show()
-    return [x, y, c]
+    # plt.show()
+    return [x, y, c, lines]
 
 
 def analyze(timestep, threshold=0):
@@ -155,7 +161,7 @@ def analyze(timestep, threshold=0):
     filtered_type = [types[i] for i in range(len(types)) if i not in filtered]
     # print(filtered_type.count(0))
     # print(filtered_type.count(3))
-    return [filtered_type.count(0), filtered_type.count(3)]
+    return [filtered_type.count(0), filtered_type.count(1), filtered_type.count(2), filtered_type.count(3)]
 
 
 def count_critical():
@@ -168,9 +174,29 @@ def count_critical():
     a = np.array(data)
     # print(a)
     plt.plot(a[:, 0], c='blue')
-    plt.plot(a[:, 1], c='red')
+    plt.plot(a[:, 1], c='green')
+    plt.plot(a[:, 2], c='yellow')
+    plt.plot(a[:, 3], c='red')
     plt.xlabel("Frame")
     plt.ylabel("#Critical Points")
     plt.show()
 
-count_parallel_channels()
+def show_reebgraph_steps():
+    fig = plt.figure()
+    gs = GridSpec(6,1)
+
+    for i,x in enumerate([0, 132, 264, 396, 528, 661]):
+        ax = fig.add_subplot(gs[i,0])
+        ax.tick_params(labelbottom=False)
+        ax.axis('off')
+        ax.tick_params(labelleft=False)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        data = plot_timestep(x, 40)
+        ax.scatter(x=data[0], y=data[1], s=2.5, c=data[2])
+        lc = mc.LineCollection(data[3], linewidths=1, color='black')
+        ax.add_collection(lc)
+
+    plt.show()
