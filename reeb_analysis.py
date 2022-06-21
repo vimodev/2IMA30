@@ -3,6 +3,7 @@ from os import listdir
 from os.path import isfile, join
 import matplotlib.pyplot as plt
 import matplotlib.collections as mc
+from joblib import Parallel, delayed
 
 # Fetch all the files
 print("Enumerating files...")
@@ -30,11 +31,10 @@ for file in files:
 # Compute the critical points and types
 print("Computing critical types...")
 critical_types = ['minimum', 'split', 'merge', 'maximum', 'none']
-for reeb_graph in timesteps:
+def compute_critical(reeb_graph):
     nodes = reeb_graph['nodes']
-    edges = reeb_graph['edges']
-    reeb_graph['types'] = [4 for i in range(len(nodes))]
-    types = reeb_graph['types']
+    edges = reeb_graph['edges'] 
+    types = [4 for i in range(len(nodes))]
     for id in range(len(nodes)):
         node = nodes[id]
         adjacent_edges = list(filter(lambda edge: edge[0] == id or edge[1] == id, edges))
@@ -50,7 +50,14 @@ for reeb_graph in timesteps:
         elif len(list(filter(lambda n: nodes[n][0] > node[0], adjacent_nodes))) > 1: types[id] = 1
         # Check merge node
         elif len(list(filter(lambda n: nodes[n][0] < node[0], adjacent_nodes))) > 1: types[id] = 2
+    return {'name': reeb_graph['file'], 'types': types}
 
+types = Parallel(n_jobs=8)(delayed(compute_critical)(reeb) for reeb in timesteps)
+for type in types:
+    for step in timesteps:
+        if step['file'] == type['name']:
+            step['types'] = type['types']
+            break
 print("Data preparation done!")
 
 def distance(n1, n2):
