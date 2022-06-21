@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.collections as mc
 import numpy as np
 from joblib import Parallel, delayed
+import networkx as nx
 
 # Fetch all the files
 print("Enumerating files...")
@@ -68,6 +69,17 @@ for type in types:
             break
 print("Data preparation done!")
 
+def count_components():
+    num_components = []
+    for reeb in timesteps:
+        G = nx.Graph()
+        G.add_nodes_from(range(len(reeb['nodes'])))
+        G.add_edges_from(reeb['edges'])
+        num_components.append(len(list(nx.connected_components(G))))
+    plt.plot(num_components)
+    plt.xlabel('Timestep')
+    plt.ylabel('#Connected components')
+    plt.show()
 
 def distance(n1, n2):
     return sqrt((n1[0] - n2[0]) ** 2 + (n1[1] - n2[1]) ** 2)
@@ -144,4 +156,4 @@ def count_critical():
     plt.ylabel("#Critical Points")
     plt.show()
 
-count_critical()
+count_components()
