@@ -3,6 +3,7 @@ from os import listdir
 from os.path import isfile, join
 import matplotlib.pyplot as plt
 import matplotlib.collections as mc
+import numpy as np
 from joblib import Parallel, delayed
 
 # Fetch all the files
@@ -33,22 +34,29 @@ print("Computing critical types...")
 critical_types = ['minimum', 'split', 'merge', 'maximum', 'none']
 def compute_critical(reeb_graph):
     nodes = reeb_graph['nodes']
-    edges = reeb_graph['edges'] 
+    edges = reeb_graph['edges']
     types = [4 for i in range(len(nodes))]
     for id in range(len(nodes)):
         node = nodes[id]
         adjacent_edges = list(filter(lambda edge: edge[0] == id or edge[1] == id, edges))
         adjacent_nodes = []
         for edge in adjacent_edges:
-            if edge[0] != id: adjacent_nodes.append(edge[0])
-            elif edge[1] != id: adjacent_nodes.append(edge[1])
+            if edge[0] != id:
+                adjacent_nodes.append(edge[0])
+            elif edge[1] != id:
+                adjacent_nodes.append(edge[1])
         # Check minimum type
-        if node[0] <= min([nodes[n][0] for n in adjacent_nodes]): types[id] = 0
+        if node[0] <= min([nodes[n][0] for n in adjacent_nodes]):
+            types[id] = 0
         # Check maximum type
-        elif node[0] >= max([nodes[n][0] for n in adjacent_nodes]): types[id] = 3
+        elif node[0] >= max([nodes[n][0] for n in adjacent_nodes]):
+            types[id] = 3
         # Check split node
-        elif len(list(filter(lambda n: nodes[n][0] > node[0], adjacent_nodes))) > 1: types[id] = 1
+        elif len(list(filter(lambda n: nodes[n][0] > node[0], adjacent_nodes))) > 1:
+            types[id] = 1
         # Check merge node
+        elif len(list(filter(lambda n: nodes[n][0] < node[0], adjacent_nodes))) > 1:
+            types[id] = 2
         elif len(list(filter(lambda n: nodes[n][0] < node[0], adjacent_nodes))) > 1: types[id] = 2
     return {'name': reeb_graph['file'], 'types': types}
 
@@ -60,8 +68,10 @@ for type in types:
             break
 print("Data preparation done!")
 
+
 def distance(n1, n2):
-    return sqrt((n1[0] - n2[0])**2 + (n1[1] - n2[1])**2)
+    return sqrt((n1[0] - n2[0]) ** 2 + (n1[1] - n2[1]) ** 2)
+
 
 def plot_timestep(timestep, threshold=0):
     reeb_graph = timesteps[timestep]
@@ -71,8 +81,9 @@ def plot_timestep(timestep, threshold=0):
     lines = []
     filtered = []
     for edge in edges:
-        if threshold > 0 and ((types[edge[0]] == 0 and types[edge[1]] == 3) or (types[edge[0]] == 3 and types[edge[1]] == 0)):
-            if distance(nodes[edge[0]], nodes[edge[1]]) < threshold: 
+        if threshold > 0 and (
+                (types[edge[0]] == 0 and types[edge[1]] == 3) or (types[edge[0]] == 3 and types[edge[1]] == 0)):
+            if distance(nodes[edge[0]], nodes[edge[1]]) < threshold:
                 filtered.append(edge[0])
                 filtered.append(edge[1])
                 continue
@@ -93,8 +104,44 @@ def plot_timestep(timestep, threshold=0):
     c = [colors[types[i]] for i in range(len(types)) if i not in filtered]
     ax.scatter(x, y, s=2.5, c=c)
     plt.show()
+    return [x, y, c]
 
 
+def analyze(timestep, threshold=0):
+    reeb_graph = timesteps[timestep]
+    nodes = reeb_graph['nodes']
+    edges = reeb_graph['edges']
+    types = reeb_graph['types']
+    filtered = []
+    for edge in edges:
+        if threshold > 0 and (
+                (types[edge[0]] == 0 and types[edge[1]] == 3) or (types[edge[0]] == 3 and types[edge[1]] == 0)):
+            if distance(nodes[edge[0]], nodes[edge[1]]) < threshold:
+                filtered.append(edge[0])
+                filtered.append(edge[1])
+                continue
+    x = [nodes[i][0] for i in range(len(nodes)) if i not in filtered]
+    y = [nodes[i][1] for i in range(len(nodes)) if i not in filtered]
+    colors = ['blue', 'green', 'yellow', 'red', 'gray']
+    filtered_type = [types[i] for i in range(len(types)) if i not in filtered]
+    # print(filtered_type.count(0))
+    # print(filtered_type.count(3))
+    return [filtered_type.count(0), filtered_type.count(3)]
 
-# print(timesteps[660]['types'])
-plot_timestep(660, threshold=40)
+
+def count_critical():
+    plot_timestep(300, threshold=40)
+    plot_timestep(550, threshold=40)
+    # print(len(timesteps));
+    data = []
+    for i in range(len(timesteps)):
+        data.append(analyze(i, 0))
+    a = np.array(data)
+    # print(a)
+    plt.plot(a[:, 0], c='blue')
+    plt.plot(a[:, 1], c='red')
+    plt.xlabel("Frame")
+    plt.ylabel("#Critical Points")
+    plt.show()
+
+count_critical()
